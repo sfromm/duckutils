@@ -21,6 +21,8 @@ __author__ = 'Stephen Fromm'
 __version__ = '0.1'
 
 import logging
+import logging.handlers
+
 import duckutils.constants as C
 
 
