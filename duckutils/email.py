@@ -24,7 +24,7 @@ try:
 except ImportError:
     from email.MIMEText import MIMEText
 
-def send_email(msg, sender, recipient, subject, server='localhost'):
+def send_email(msg, sender, recipient, subject, server=C.DEFAULT_SMTP_SERVER):
     ''' send an email
 
     :param msg: Email message body

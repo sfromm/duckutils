@@ -20,3 +20,4 @@ import os
 
 DEFAULT_LOGFORMAT = os.environ.get('DUCKUTILS_LOGFORMAT',
                                    '%(asctime)s: [%(levelname)s] %(message)s')
+DEFAULT_SMTP_SERVER = os.environ.get('DUCKUTILS_SMTP_SERVER', 'localhost')
