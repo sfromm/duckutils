@@ -22,9 +22,9 @@ __version__ = '0.1'
 
 import logging
 import logging.handlers
+import yaml
 
 import duckutils.constants as C
-
 
 def setup_logging(verbose, debug, use_syslog=False):
     ''' initalize logging
@@ -61,3 +61,25 @@ def setup_logging(verbose, debug, use_syslog=False):
         formatter = logging.Formatter('%(filename)s: %(message)s')
         handler.setFormatter(formatter)
         logger.addHandler(handler)
+
+def parse_yaml(data):
+    ''' convert yaml string to data structure '''
+    return yaml.load(data)
+
+def parse_yaml_from_file(path):
+    ''' read yaml string from path and convert to data structure '''
+    try:
+        data = file(path).read()
+        return parse_yaml(data)
+    except IOError:
+        logging.error('file not found: %s', path)
+        return None
+    except yaml.YAMLError, e:
+        msg = 'Could not parse YAML file %s' % path
+        if hasattr(e, 'problem_mark'):
+            mark = e.problem_mark
+            msg = 'Invalid yaml file %s: line %s, column %s' % (
+                    path, mark.line +1, mark.column + 1
+            )
+        logging.error(msg)
+        return None
