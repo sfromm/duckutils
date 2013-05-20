@@ -22,6 +22,8 @@ __version__ = '0.1'
 
 import logging
 import logging.handlers
+import subprocess
+import traceback
 import yaml
 
 import duckutils.constants as C
@@ -83,3 +85,23 @@ def parse_yaml_from_file(path):
             )
         logging.error(msg)
         return None
+
+def run_command(args, cwd=None):
+    ''' run a command via subprocess '''
+    shell = True
+    if isinstance(args, list):
+        shell = False
+    out = ''
+    try:
+        cmd = subprocess.Popen(args, shell=shell, cwd=cwd,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+        out, err = cmd.communicate()
+        rc = cmd.returncode
+    except (OSError, IOError), e:
+        err = str(e)
+        rc = e.errno
+    except:
+        err = traceback.format_exc()
+        rc = 257
+    return (rc, out, err)
