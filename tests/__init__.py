@@ -17,12 +17,22 @@ class TestUtils(unittest.TestCase):
 
     def setUp(self):
         self.basedir = os.path.dirname(__file__)
+        self.cmd_success = '/bin/true'
+        self.cmd_fail = '/bin/false'
 
     def test_email(self):
         r = duckutils.sendemail.send_email(SMTP_TEXT,
                 SMTP_SENDER, SMTP_RECIPIENT,
                 SMTP_SUBJECT, server=C.DEFAULT_SMTP_SERVER)
         assert r is True
+
+    def test_command(self):
+        (rc, out, err) = duckutils.run_command(self.cmd_success)
+        assert rc == 0
+        (rc, out, err) = duckutils.run_command(self.cmd_fail)
+        assert rc == 1
+        (rc, out, err) = duckutils.run_command('/usr/bin/this-does-not-exist')
+        assert rc == 127
 
     def test_yaml(self):
         r = duckutils.parse_yaml_from_file(os.path.join(self.basedir, YAML_FILE))
