@@ -11,6 +11,7 @@ Source0:	duckutils-%{version}.tar.gz
 
 BuildRequires:	python-devel
 Requires:	python
+Requires:	PyYAML
 
 %description
 A collection of helper methods and functions for other python applications.
