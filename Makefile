@@ -30,7 +30,7 @@ RPMNVR = "$(NAME)-$(VERSION)-$(RPMRELEASE)$(RPMDIST)"
 all: clean python
 
 test:
-	DUCKUTILS_SMTP_RECIPIENT=stephenf@nero.net DUCKUTILS_SMTP_SERVER=mail.nero.net PYTHONPATH=duckutils nosetests -d -v 
+	PYTHONPATH=duckutils nosetests -d -v
 
 clean:
 	@echo 'Cleaning up'
