@@ -12,6 +12,7 @@ setup(name=__name__,
       author_email='sfromm@gmail.com',
       url='https://github.com/sfromm/duckutils',
       license='GPLv3',
+      install_requires=['PyYaml'],
       package_dir={'duckutils': 'duckutils'},
       packages=['duckutils']
       )

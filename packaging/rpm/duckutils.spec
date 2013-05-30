@@ -10,6 +10,7 @@ URL:		https://github.com/sfromm/duckutils
 Source0:	duckutils-%{version}.tar.gz
 
 BuildRequires:	python-devel
+BuildRequires:	PyYAML
 Requires:	python
 Requires:	PyYAML
 
