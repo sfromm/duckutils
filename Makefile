@@ -36,6 +36,7 @@ clean:
 	@echo 'Cleaning up'
 	rm -rf build
 	rm -rf dist
+	rm -rf rpm-build
 	find . -type f -regex ".*\.py[co]$$" -delete
 
 python:
