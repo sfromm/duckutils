@@ -2,6 +2,7 @@
 
 import unittest
 import os
+import tempfile
 
 import duckutils
 import duckutils.constants as C
@@ -47,3 +48,11 @@ class TestUtils(unittest.TestCase):
         fd = file(os.path.join(self.basedir, JSON_FILE))
         r = duckutils.flock_file(fd)
         r = duckutils.unflock_file(fd)
+
+    def test_touch(self):
+        (fh, path) = tempfile.mkstemp()
+        path2 = '%s.tmp2' % path
+        duckutils.touch_file(path)
+        duckutils.touch_file(path2)
+        os.unlink(path)
+        os.unlink(path2)

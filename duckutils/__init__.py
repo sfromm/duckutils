@@ -23,6 +23,7 @@ __version__ = '0.1'
 import fcntl
 import logging
 import logging.handlers
+import os
 import subprocess
 import traceback
 import yaml
@@ -115,6 +116,14 @@ def flock_file(fd):
 def unflock_file(fd):
     ''' unlock a file '''
     fcntl.flock(fd, fcntl.LOCK_UN)
+
+def touch_file(path, ts=None):
+    ''' touch file '''
+    fh = file(path, 'a')
+    try:
+        os.utime(path, ts)
+    finally:
+        fh.close()
 
 def run_command(args, cwd=None):
     ''' run a command via subprocess '''
