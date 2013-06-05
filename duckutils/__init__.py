@@ -20,6 +20,7 @@ __name__ = 'duckutils'
 __author__ = 'Stephen Fromm'
 __version__ = '0.1'
 
+import fcntl
 import logging
 import logging.handlers
 import subprocess
@@ -27,6 +28,11 @@ import traceback
 import yaml
 
 import duckutils.constants as C
+
+try:
+    import json
+except ImportError:
+    import simplejson
 
 def setup_logging(verbose, debug, use_syslog=False):
     ''' initalize logging
@@ -64,6 +70,22 @@ def setup_logging(verbose, debug, use_syslog=False):
         handler.setFormatter(formatter)
         logger.addHandler(handler)
 
+def parse_json(data):
+    ''' convert json string to data structure '''
+    return json.loads(data)
+
+def parse_json_from_file(path):
+    ''' read json string from path and convert to data structure '''
+    try:
+        data = file(path).read()
+        return parse_json(data)
+    except IOError:
+        logging.error('file not found: %s', path)
+        return None
+    except Exception, e:
+        logging.error('failed to parse json from file %s: %s', path, str(e))
+        return None
+
 def parse_yaml(data):
     ''' convert yaml string to data structure '''
     return yaml.load(data)
@@ -85,6 +107,14 @@ def parse_yaml_from_file(path):
             )
         logging.error(msg)
         return None
+
+def flock_file(fd):
+    ''' exclusive lock on file '''
+    fcntl.flock(fd, fcntl.LOCK_EX)
+
+def unflock_file(fd):
+    ''' unlock a file '''
+    fcntl.flock(fd, fcntl.LOCK_UN)
 
 def run_command(args, cwd=None):
     ''' run a command via subprocess '''

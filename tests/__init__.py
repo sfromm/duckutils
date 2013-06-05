@@ -12,6 +12,7 @@ SMTP_RECIPIENT = os.environ.get('DUCKUTILS_SMTP_RECIPIENT', 'root@localhost')
 SMTP_SUBJECT = os.environ.get('DUCKUTILS_SMTP_SUBJECT', 'nose test')
 SMTP_TEXT = 'This is a test message'
 YAML_FILE = 'test.yml'
+JSON_FILE = 'test.json'
 
 class TestUtils(unittest.TestCase):
 
@@ -37,3 +38,12 @@ class TestUtils(unittest.TestCase):
     def test_yaml(self):
         r = duckutils.parse_yaml_from_file(os.path.join(self.basedir, YAML_FILE))
         assert r is not None
+
+    def test_json(self):
+        r = duckutils.parse_json_from_file(os.path.join(self.basedir, JSON_FILE))
+        assert r is not None
+
+    def test_flock(self):
+        fd = file(os.path.join(self.basedir, JSON_FILE))
+        r = duckutils.flock_file(fd)
+        r = duckutils.unflock_file(fd)
