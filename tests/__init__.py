@@ -46,8 +46,16 @@ class TestUtils(unittest.TestCase):
 
     def test_flock(self):
         fd = file(os.path.join(self.basedir, JSON_FILE))
-        r = duckutils.flock_file(fd)
-        r = duckutils.unflock_file(fd)
+        duckutils.flock_file(fd)
+        duckutils.unflock_file(fd)
+
+    def test_nb_flock(self):
+        fd1 = file(os.path.join(self.basedir, JSON_FILE))
+        fd2 = file(os.path.join(self.basedir, JSON_FILE))
+        duckutils.flock_file(fd1)
+        r = duckutils.nb_flock_file(fd2)
+        assert r is False
+        duckutils.unflock_file(fd1)
 
     def test_touch(self):
         (fh, path) = tempfile.mkstemp()

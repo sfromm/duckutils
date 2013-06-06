@@ -109,6 +109,14 @@ def parse_yaml_from_file(path):
         logging.error(msg)
         return None
 
+def nb_flock_file(fd):
+    ''' non-block lock on file '''
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX|fcntl.LOCK_NB)
+        return True
+    except IOError:
+        return False
+
 def flock_file(fd):
     ''' exclusive lock on file '''
     fcntl.flock(fd, fcntl.LOCK_EX)
