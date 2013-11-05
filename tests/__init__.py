@@ -43,6 +43,8 @@ class TestUtils(unittest.TestCase):
     def test_json(self):
         r = duckutils.parse_json_from_file(os.path.join(self.basedir, JSON_FILE))
         assert r is not None
+        r = duckutils.json_dumps(r)
+        assert isinstance(r, str)
 
     def test_flock(self):
         fd = file(os.path.join(self.basedir, JSON_FILE))
