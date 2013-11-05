@@ -78,6 +78,14 @@ def setup_logging(verbose, debug, use_syslog=False):
             if isinstance(filelogger, logging.FileHandler):
                 filelogger.close()
 
+def json_dumps(data, indent=4, sortkeys=True):
+    ''' convert json data structure to string '''
+    try:
+        return json.dumps(data, sort_keys=sortkeys, indent=indent)
+    except Exception, e:
+        logging.error('failed to serialize json to string: %s', str(e))
+        return ''
+
 def parse_json(data):
     ''' convert json string to data structure '''
     return json.loads(data)
