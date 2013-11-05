@@ -18,7 +18,7 @@
 
 __name__ = 'duckutils'
 __author__ = 'Stephen Fromm'
-__version__ = '0.1'
+__version__ = '0.2'
 
 import fcntl
 import logging
