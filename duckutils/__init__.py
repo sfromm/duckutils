@@ -24,6 +24,7 @@ import fcntl
 import logging
 import logging.handlers
 import os
+import socket
 import subprocess
 import traceback
 import yaml
@@ -61,15 +62,21 @@ def setup_logging(verbose, debug, use_syslog=False):
         if 'flush' in dir(logger):
             logger.flush()
 
-        h = logger.handlers[0]
-        logger.removeHandler(h)
-        if isinstance(h, logging.FileHandler):
-            h.close()
+        filelogger = logger.handlers[0]
 
-        handler = logging.handlers.SysLogHandler(address='/dev/log')
-        formatter = logging.Formatter('%(filename)s: %(message)s')
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
+        syslog = None
+        try:
+            syslog = logging.handlers.SysLogHandler(address='/dev/log')
+            formatter = logging.Formatter('%(filename)s: %(message)s')
+            syslog.setFormatter(formatter)
+            logger.addHandler(syslog)
+        except socket.error:
+            if syslog is not None:
+                syslog.close()
+        else:
+            logger.removeHandler(filelogger)
+            if isinstance(filelogger, logging.FileHandler):
+                filelogger.close()
 
 def parse_json(data):
     ''' convert json string to data structure '''
