@@ -167,3 +167,33 @@ def run_command(args, cwd=None):
         err = traceback.format_exc()
         rc = 257
     return (rc, out, err)
+
+def daemonize():
+    ''' daemonize process '''
+    try:
+        pid = os.fork()
+        if pid > 0:
+            sys.exit(0)
+    except OSError, e:
+        logging.error("failed to fork (#1): (%d) %s", e.errno, e.strerror)
+        sys.exit(1)
+    # decouple from parent
+    os.chdir('/')
+    os.setsid()
+    os.umask(0)
+    # fork again
+    try:
+        pid = os.fork()
+        if pid > 0:
+            sys.exit(0)
+    except OSError, e:
+        logging.error("failed to fork (#2): (%d) %s", e.errno, e.strerror)
+        sys.exit(1)
+    sys.stdout.flush()
+    sys.stderr.flush()
+    si = file(os.devnull, 'r')
+    so = file(os.devnull, 'a+')
+    se = file(os.devnull, 'a+', 0)
+    os.dup2(si.fileno(), sys.stdin.fileno())
+    os.dup2(so.fileno(), sys.stdout.fileno())
+    os.dup2(se.fileno(), sys.stderr.fileno())
