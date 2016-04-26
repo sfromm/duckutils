@@ -37,7 +37,7 @@ try:
 except ImportError:
     HAVE_FEDMSG = False
 
-def send_email(msg, sender, recipient, subject, server=C.DEFAULT_SMTP_SERVER):
+def send_email(msg, sender, recipient, subject, **kwargs):
     ''' send an email
 
     :param msg: Email message body
@@ -46,14 +46,21 @@ def send_email(msg, sender, recipient, subject, server=C.DEFAULT_SMTP_SERVER):
     :param subject: Subject of email
     :param server: SMTP server, defaults to localhost
     '''
+    server = kwargs.get('server', DEFAULT_SMTP_SERVER)
+    cc = kwargs.get('cc', None)
+    recipients = list()
+    recipients.append(recipient)
     msg = MIMEText(msg)
     msg['From'] = sender
     msg['To'] = recipient
+    if cc:
+        msg['Cc'] = cc
+        recipients.append(cc)
     msg['Date'] = email.utils.formatdate(time.time(), True)
     msg['Subject'] = subject
     try:
         s = smtplib.SMTP(server)
-        s.sendmail(sender, [recipient], msg.as_string())
+        s.sendmail(sender, recipients, msg.as_string())
         s.quit()
     except Exception, e:
         logging.warn('failed to send email: %s', str(e))
@@ -61,6 +68,12 @@ def send_email(msg, sender, recipient, subject, server=C.DEFAULT_SMTP_SERVER):
     return True
 
 def fedmsg_publish(msg, modname=C.DEFAULT_FEDMSG_MODNAME, topic=C.DEFAULT_FEDMSG_TOPIC):
+    ''' publish message to fedmsg bus
+
+    :param msg: JSON message
+    :param modname: Message topic name
+    :param topic: Message topic
+    '''
     if not HAVE_FEDMSG:
         return
     hostname = socket.gethostname().split('.', 1)[0]
