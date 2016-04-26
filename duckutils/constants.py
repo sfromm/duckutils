@@ -18,6 +18,8 @@
 
 import os
 
-DEFAULT_LOGFORMAT = os.environ.get('DUCKUTILS_LOGFORMAT',
-                                   '%(asctime)s: [%(levelname)s] %(message)s')
-DEFAULT_SMTP_SERVER = os.environ.get('DUCKUTILS_SMTP_SERVER', 'localhost')
+DEFAULT_LOGFORMAT      = os.environ.get('DUCKUTILS_LOGFORMAT',      '%(asctime)s: [%(levelname)s] %(message)s')
+DEFAULT_SMTP_SERVER    = os.environ.get('DUCKUTILS_SMTP_SERVER',    'localhost')
+
+DEFAULT_FEDMSG_MODNAME = os.environ.get('DUCKUTILS_FEDMSG_MODNAME', 'duckutils')
+DEFAULT_FEDMSG_TOPIC   = os.environ.get('DUCKUTILS_FEDMSG_TOPIC',   'update')
