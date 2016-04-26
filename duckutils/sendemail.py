@@ -1,5 +1,5 @@
 # Written by Stephen Fromm <stephenf nero net>
-# (C) 2012 University of Oregon
+# (C) 2012-2016 University of Oregon
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ def send_email(msg, sender, recipient, subject, server=C.DEFAULT_SMTP_SERVER):
     :param subject: Subject of email
     :param server: SMTP server, defaults to localhost
     '''
+    logging.info("this module is deprecated")
     msg = MIMEText(msg)
     msg['From'] = sender
     msg['To'] = recipient
