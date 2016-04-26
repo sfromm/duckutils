@@ -46,7 +46,7 @@ def send_email(msg, sender, recipient, subject, **kwargs):
     :param subject: Subject of email
     :param kwargs: key-word arguments.  Valid ones include: server and cc.
     '''
-    server = kwargs.get('server', DEFAULT_SMTP_SERVER)
+    server = kwargs.get('server', C.DEFAULT_SMTP_SERVER)
     cc = kwargs.get('cc', None)
     recipients = list()
     recipients.append(recipient)
