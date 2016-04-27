@@ -70,8 +70,8 @@ def drop_privileges(user='nobody', group='nobody'):
     ''' drop privileges if running as root '''
     if os.getuid() != 0:
         return
-    new_uid = pwd.getpwname(user).pw_uid
-    new_gid = grp.getgrname(group).gr_gid
+    new_uid = pwd.getpwnam(user).pw_uid
+    new_gid = grp.getgrnam(group).gr_gid
     try:
         os.setgroups([])
         os.setgid(new_gid)
