@@ -73,6 +73,7 @@ def drop_privileges(user='nobody', group='nobody'):
     new_uid = pwd.getpwnam(user).pw_uid
     new_gid = grp.getgrnam(group).gr_gid
     try:
+        logging.info("dropping privileges")
         os.setgroups([])
         os.setgid(new_gid)
         os.setuid(new_uid)
