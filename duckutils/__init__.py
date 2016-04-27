@@ -18,7 +18,7 @@
 
 __name__ = 'duckutils'
 __author__ = 'Stephen Fromm'
-__version__ = '3'
+__version__ = '4'
 
 import fcntl
 import logging
@@ -171,6 +171,7 @@ def run_command(args, cwd=None):
 
 def daemonize():
     ''' daemonize process '''
+    logging.warn("deprecated. please use duckutils.daemon")
     try:
         pid = os.fork()
         if pid > 0:
@@ -198,16 +199,3 @@ def daemonize():
     os.dup2(si.fileno(), sys.stdin.fileno())
     os.dup2(so.fileno(), sys.stdout.fileno())
     os.dup2(se.fileno(), sys.stderr.fileno())
-
-def write_pid_file(path):
-    ''' write a pid file '''
-    pid = str(os.getpid())
-    logging.debug("writing pid file: %s", path)
-    try:
-        f = open(path, 'w')
-        f.write(pid)
-        f.close()
-        return True
-    except Exception as e:
-        logging.error("failed to write pid file: %s", str(e))
-        return False
